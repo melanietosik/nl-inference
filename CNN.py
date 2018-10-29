@@ -5,39 +5,13 @@ import torch.nn.functional as F
 import fasttext_loader
 
 
-class BiGRU(nn.Module):
+class CNN(nn.Module):
     """
-    BiGRU: bi-directional GRU
-    """
-
-    def __init__(self, input_dim, hidden_dim):
-        super().__init__()
-        self.input_dim = input_dim
-        self.hidden_dim = hidden_dim
-        self.fw_gru = nn.GRUCell(input_dim, hidden_dim)  # Forward
-        self.bw_gru = nn.GRUCell(input_dim, hidden_dim)  # Backward
-
-    def forward(self, x):
-        time = x.size(1)  # x = [batch_size x time x input]
-        hx_1 = x.new(x.size(0), self.hidden_dim).zero_()
-        for i in range(time):
-            hx_1 = self.fw_gru(x[:, i], hx_1)
-        hx_2 = x.new(x.size(0), self.hidden_dim).zero_()
-        for i in reversed(range(time)):
-            hx_2 = self.bw_gru(x[:, i], hx_2)
-
-        # Concatenate forward and backward representations
-        h = torch.cat([hx_1, hx_2], dim=1)
-        return h
-
-
-class RNN(nn.Module):
-    """
-    RNN: single-layer, bi-directional GRU
+    CNN: 2-layer 1-D convolutional network with ReLU activations
     """
 
     def __init__(
-        self, vocab_size, emb_dim, hidden_dim, dropout_prob,
+        self, vocab_size, emb_dim, hidden_dim, kernel_size, dropout_prob,
             padding_idx, num_classes, id2tok):
         super().__init__()
 
@@ -53,14 +27,17 @@ class RNN(nn.Module):
         self.embedding.weight.data.copy_(torch.from_numpy(weights))
         self.embedding.weight.requires_grad = False  # Freeze embeddings
 
-        # Bi-directional GRU layer
-        self.bigru = BiGRU(input_dim=emb_dim, hidden_dim=hidden_dim)
+        # Convolutional layers
+        self.conv1 = nn.Conv1d(
+            emb_dim, hidden_dim, kernel_size=kernel_size, padding=1)
+        self.conv2 = nn.Conv1d(
+            hidden_dim, hidden_dim, kernel_size=kernel_size, padding=1)
 
         # Dropout layer
         self.dropout = nn.Dropout(p=dropout_prob)
 
         # Fully connected layers
-        self.fc1 = nn.Linear(2 * 2 * hidden_dim, hidden_dim)  # hx+hy and fw+bw
+        self.fc1 = nn.Linear(2 * hidden_dim, hidden_dim)
         self.fc2 = nn.Linear(hidden_dim, num_classes)
 
     def forward(self, p, h):
@@ -74,14 +51,23 @@ class RNN(nn.Module):
         @param p: premises
         @param h: hypotheses
         """
+        p_bsz, p_time = p.shape
+        h_bsz, h_time = h.shape
+
         # Embed and encode premises
         x = self.embedding(p)
-        hx = self.bigru(x)
+        x = x.transpose(1, 2)  # Conv1d expects (bsz x features x length)
+        hx = F.relu(self.conv1(x))
+        hx = F.relu(self.conv2(hx))
+        hx = F.max_pool1d(hx, p_time).squeeze(2)  # Max pooling, drop dim=2
         hx = self.dropout(hx)  # Dropout regularization
 
         # Embed and encode hypotheses
         y = self.embedding(h)
-        hy = self.bigru(y)
+        y = y.transpose(1, 2)  # Conv1d expects (bsz x features x length)
+        hy = F.relu(self.conv1(y))
+        hy = F.relu(self.conv2(hy))
+        hy = F.max_pool1d(hy, h_time).squeeze(2)  # Max pooling, drop dim=2
         hy = self.dropout(hy)  # Dropout regularization
 
         # Concatenate sentence representations
