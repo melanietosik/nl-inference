@@ -1,0 +1,43 @@
+(nli) [mt3685@gpu-73 nl-inference]$ python run_mnli.py --model cnn --hidden-dim 500 --kernel-size 2 --inspect 1
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=500, id='debug', inspect=1, kernel_size=2, log_interval=100, lr=0.001, model='cnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/snli_val.tsv')
+
+Validation premises with correct predictions:
+
+#1
+ a clown making a balloon animal for a pretty lady .
+#2
+ two men sitting on horses one wearing a cowboy hat , the other in a baseball cap , with a big tree behind them .
+#3
+ a girl in a white dress dancing in a field .
+
+Validation premises with incorrect predictions:
+
+#1
+ two men are listening to music through headphones .
+#2
+ several people , including a boy in a striped shirt walk on a concrete path away from a body of water .
+#3
+ a shopper buys cat food at a walmart
+
+(nli) [mt3685@gpu-73 nl-inference]$ python run_mnli.py --model rnn --hidden-dim 250 --inspect 1
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=250, id='debug', inspect=1, kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/snli_val.tsv')
+
+Validation premises with correct predictions:
+
+#1
+ the little boy is jumping into a puddle on the street .
+#2
+ an older couple is resting on a bench .
+#3
+ there is a street with buildings and one man in black walking on the side of the road .
+
+Validation premises with incorrect predictions:
+
+#1
+ an african american woman with 2 young girls .
+#2
+ a farmer gives a tour of his farm to local families
+#3
+ female runners from japan , germany and china are running side by side .

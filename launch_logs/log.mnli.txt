@@ -1,0 +1,72 @@
+[mt3685@gpu-31 nl-inference]$ cat /scratch/mt3685/nl_data/models/
+cnn.pt      cnn.pt.txt  rnn.pt      rnn.pt.txt
+[mt3685@gpu-31 nl-inference]$ cat /scratch/mt3685/nl_data/models/rnn.pt.txt
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=10, hidden_dim=250, id='rnn_best', kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/snli_val.tsv')
+
+SNLI validation accuracy: 72.8
+Number of model parameters: 1079003
+[mt3685@gpu-31 nl-inference]$ cat /scratch/mt3685/nl_data/models/cnn.pt.txt
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=10, hidden_dim=500, id='cnn_best', kernel_size=2, log_interval=100, lr=0.001, model='cnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/snli_val.tsv')
+
+SNLI validation accuracy: 71.5
+Number of model parameters: 1303003
+[mt3685@gpu-31 nl-inference]$ python run_mnli.py --hidden-dim 250 --val /scratch/mt3685/nl_data/mnli_val.fiction.tsv
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=250, id='debug', inspect=0, kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/mnli_val.fiction.tsv')
+
+ Validation accuracy: 47.93969849246231
+*****
+[mt3685@gpu-31 nl-inference]$ python run_mnli.py --hidden-dim 250 --val /scratch/mt3685/nl_data/mnli_val.slate.tsv
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=250, id='debug', inspect=0, kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/mnli_val.slate.tsv')
+
+ Validation accuracy: 43.41317365269461
+*****
+[mt3685@gpu-31 nl-inference]$ python run_mnli.py --hidden-dim 250 --val /scratch/mt3685/nl_data/mnli_val.telephone.tsv
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=250, id='debug', inspect=0, kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/mnli_val.telephone.tsv')
+
+ Validation accuracy: 47.76119402985075
+*****
+[mt3685@gpu-31 nl-inference]$ python run_mnli.py --hidden-dim 250 --val /scratch/mt3685/nl_data/mnli_val.government.tsv
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=250, id='debug', inspect=0, kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/mnli_val.government.tsv')
+
+ Validation accuracy: 48.22834645669291
+*****
+[mt3685@gpu-31 nl-inference]$ python run_mnli.py --hidden-dim 250 --val /scratch/mt3685/nl_data/mnli_val.travel.tsv
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=250, id='debug', inspect=0, kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/mnli_val.travel.tsv')
+
+ Validation accuracy: 46.13034623217923
+*****
+[mt3685@gpu-73 nl-inference]$ python run_mnli.py --model cnn --hidden-dim 500 --kernel-size 2 --val /scratch/mt3685/nl_data/mnli_val.fiction.tsv
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=500, id='debug', inspect=0, kernel_size=2, log_interval=100, lr=0.001, model='cnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/mnli_val.fiction.tsv')
+
+ Validation accuracy: 43.41708542713568
+*****
+[mt3685@gpu-73 nl-inference]$ python run_mnli.py --model cnn --hidden-dim 500 --kernel-size 2 --val /scratch/mt3685/nl_data/mnli_val.slate.tsv
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=500, id='debug', inspect=0, kernel_size=2, log_interval=100, lr=0.001, model='cnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/mnli_val.slate.tsv')
+
+ Validation accuracy: 43.31337325349301
+*****
+[mt3685@gpu-73 nl-inference]$ python run_mnli.py --model cnn --hidden-dim 500 --kernel-size 2 --val /scratch/mt3685/nl_data/mnli_val.telephone.tsv
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=500, id='debug', inspect=0, kernel_size=2, log_interval=100, lr=0.001, model='cnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/mnli_val.telephone.tsv')
+
+ Validation accuracy: 45.87064676616915
+*****
+[mt3685@gpu-73 nl-inference]$ python run_mnli.py --model cnn --hidden-dim 500 --kernel-size 2 --val /scratch/mt3685/nl_data/mnli_val.government.tsv
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=500, id='debug', inspect=0, kernel_size=2, log_interval=100, lr=0.001, model='cnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/mnli_val.government.tsv')
+
+ Validation accuracy: 43.7007874015748
+*****
+[mt3685@gpu-73 nl-inference]$ python run_mnli.py --model cnn --hidden-dim 500 --kernel-size 2 --val /scratch/mt3685/nl_data/mnli_val.travel.tsv
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=500, id='debug', inspect=0, kernel_size=2, log_interval=100, lr=0.001, model='cnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/mnli_val.travel.tsv')
+
+ Validation accuracy: 44.5010183299389
+*****
