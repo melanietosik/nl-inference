@@ -1,0 +1,89 @@
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=10, hidden_dim=250, id='rnn_best', kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/snli_val.tsv')
+
+==================== epoch: 1 ====================
+  Saving model...
+epoch: [ 1/10]; step: [101/391]; loss: 0.9397
+  Saving model...
+epoch: [ 1/10]; step: [201/391]; loss: 0.8939
+  Saving model...
+epoch: [ 1/10]; step: [301/391]; loss: 0.9007
+
+ epoch: [ 1/10]; val loss: 0.8347; val acc: 61.1
+
+==================== epoch: 2 ====================
+  Saving model...
+epoch: [ 2/10]; step: [101/391]; loss: 0.7594
+  Saving model...
+epoch: [ 2/10]; step: [201/391]; loss: 0.8128
+  Saving model...
+epoch: [ 2/10]; step: [301/391]; loss: 0.8423
+
+ epoch: [ 2/10]; val loss: 0.7744; val acc: 65.3
+
+==================== epoch: 3 ====================
+  Saving model...
+epoch: [ 3/10]; step: [101/391]; loss: 0.7489
+epoch: [ 3/10]; step: [201/391]; loss: 0.7945
+  Saving model...
+epoch: [ 3/10]; step: [301/391]; loss: 0.7143
+
+ epoch: [ 3/10]; val loss: 0.7355; val acc: 69.1
+  Saving model...
+
+==================== epoch: 4 ====================
+epoch: [ 4/10]; step: [101/391]; loss: 0.6548
+epoch: [ 4/10]; step: [201/391]; loss: 0.6559
+  Saving model...
+epoch: [ 4/10]; step: [301/391]; loss: 0.6395
+
+ epoch: [ 4/10]; val loss: 0.7118; val acc: 69.5
+
+==================== epoch: 5 ====================
+epoch: [ 5/10]; step: [101/391]; loss: 0.7692
+epoch: [ 5/10]; step: [201/391]; loss: 0.5746
+epoch: [ 5/10]; step: [301/391]; loss: 0.6009
+
+ epoch: [ 5/10]; val loss: 0.6958; val acc: 70.4
+  Saving model...
+
+==================== epoch: 6 ====================
+epoch: [ 6/10]; step: [101/391]; loss: 0.5216
+epoch: [ 6/10]; step: [201/391]; loss: 0.5841
+epoch: [ 6/10]; step: [301/391]; loss: 0.5929
+
+ epoch: [ 6/10]; val loss: 0.6972; val acc: 69.8
+
+==================== epoch: 7 ====================
+  Saving model...
+epoch: [ 7/10]; step: [101/391]; loss: 0.5632
+  Saving model...
+epoch: [ 7/10]; step: [201/391]; loss: 0.5891
+  Saving model...
+epoch: [ 7/10]; step: [301/391]; loss: 0.5523
+
+ epoch: [ 7/10]; val loss: 0.6820; val acc: 72.8
+  Saving model...
+
+==================== epoch: 8 ====================
+epoch: [ 8/10]; step: [101/391]; loss: 0.4889
+epoch: [ 8/10]; step: [201/391]; loss: 0.5565
+epoch: [ 8/10]; step: [301/391]; loss: 0.5488
+
+ epoch: [ 8/10]; val loss: 0.6923; val acc: 70.9
+
+==================== epoch: 9 ====================
+epoch: [ 9/10]; step: [101/391]; loss: 0.4284
+epoch: [ 9/10]; step: [201/391]; loss: 0.4922
+epoch: [ 9/10]; step: [301/391]; loss: 0.4341
+
+ epoch: [ 9/10]; val loss: 0.7281; val acc: 70.5
+
+==================== epoch: 10 ====================
+epoch: [10/10]; step: [101/391]; loss: 0.3829
+epoch: [10/10]; step: [201/391]; loss: 0.4189
+epoch: [10/10]; step: [301/391]; loss: 0.4364
+
+ epoch: [10/10]; val loss: 0.7598; val acc: 72.2
+*****
+

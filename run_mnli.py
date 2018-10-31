@@ -1,5 +1,4 @@
 import argparse
-import json
 import numpy as np
 import torch
 
@@ -9,81 +8,8 @@ import data_loader
 from RNN import RNN
 from CNN import CNN
 
-num_params = 0  # Number of model parameters (theta)
-best_val_acc = 0.0  # Best validation accuracy across all epochs
 
-
-def train(args, model, device, train_loader, val_loader,
-          optimizer, criterion, epoch):
-    """
-    Training function
-
-    @param args: command line arguments
-    @param model: CNN() or RNN()
-    @param device: device type ("cpu" or "cuda")
-    @param train_loader: training DataLoader()
-    @param val_loader: validation DataLoader()
-    @param optimizer: optimizer object
-    @param optimizer: criterion object
-    @param epoch: current epoch
-    """
-    model.train()
-
-    # Iterate over mini-batches
-    for ix, (p, h, target) in enumerate(train_loader):
-
-        p, h, target = p.to(device), h.to(device), target.to(device)
-        optimizer.zero_grad()
-
-        # Forward pass
-        output = model(p, h)
-        loss = criterion(output, target)
-
-        # Backward pass and optimize
-        loss.backward()
-        optimizer.step()
-
-        # Logging
-        if ((ix > 0) and (ix % args.log_interval == 0)):
-
-            model.eval()
-
-            # Logging
-            train_acc, train_loss = eval_model(
-                train_loader, model, device, criterion)
-            val_acc, val_loss = eval_model(
-                val_loader, model, device, criterion)
-            logging["train_accs"].append(train_acc)
-            logging["train_loss"].append(train_loss)
-            logging["val_accs"].append(val_acc)
-            logging["val_loss"].append(val_loss)
-
-            # Save best model
-            global best_val_acc
-            if val_acc > best_val_acc:
-                print("  Saving model...")
-                save_model(args, model, val_acc)
-                best_val_acc = val_acc
-
-            print(
-                "epoch: [{:>2}/{:>2}]; step: [{:>3}/{:>3}]; loss: {:.4f}".format(
-                    epoch, args.epochs, ix + 1, len(train_loader), loss))
-
-            model.train()
-
-    # Final validation
-    val_acc, val_loss = eval_model(val_loader, model, device, criterion)
-    print("\n epoch: [{:>2}/{:>2}]; val loss: {:.4f}; val acc: {}".format(
-        epoch, args.epochs, val_loss, val_acc))
-
-    # Save best model
-    if val_acc > best_val_acc:
-        print("  Saving model...")
-        save_model(args, model, val_acc)
-        best_val_acc = val_acc
-
-
-def eval_model(loader, model, device, criterion):
+def eval_model(loader, model, device, criterion, inspect=False):
     """
     Helper function to evaluate model performance on the given dataset
 
@@ -110,29 +36,33 @@ def eval_model(loader, model, device, criterion):
         total += target.size(0)
         correct += pred.eq(target.view_as(pred)).sum().item()
 
+        if inspect:
+            right_preds = []
+            wrong_preds = []
+            right_batched = pred.eq(target.view_as(pred))
+            # Correct
+            for i, right in enumerate(right_batched):
+                right = right.item()
+                if right:
+                    right_preds.append(p[i].cpu().numpy())
+                if len(right_preds) == 3:
+                    break
+            # Incorrect
+            for i, right in enumerate(right_batched):
+                right = right.item()
+                if right:
+                    continue
+                wrong_preds.append(p[i].cpu().numpy())
+                if len(wrong_preds) == 3:
+                    break
+            return right_preds, wrong_preds
+
     return (100 * correct / total), (running_loss / total)
-
-
-def save_model(args, model, val_acc):
-    """
-    Save best model and details to disk
-    """
-    model_fp = "{}{}.pt".format(const.MODELS, args.model)
-    details_fp = "{}{}.pt.txt".format(const.MODELS, args.model)
-    # Write model
-    torch.save(model.state_dict(), model_fp)
-    # Write details
-    with open(details_fp, "w") as out:
-        out.write(str(args) + "\n\n")
-        out.write("SNLI validation accuracy: {}\n".format(val_acc))
-        global num_params
-        out.write("Number of model parameters: {}\n".format(num_params))
-    return
 
 
 def main(args):
     """
-    Main function
+    Evaluate SNLI model on MNLI data set
     """
     # Use CUDA
     use_cuda = args.use_cuda and torch.cuda.is_available()
@@ -143,7 +73,7 @@ def main(args):
 
     # Generate token-to-index and index-to-token mapping
     tok2id, id2tok = data_loader.build_or_load_vocab(
-        args.train, overwrite=True)
+        args.train, overwrite=False)
 
     print("*" * 5)
     print(args)
@@ -155,8 +85,8 @@ def main(args):
         "shuffle": args.shuffle,
         "num_workers": args.num_workers,
     }
-    train_dataset = data_loader.SNLIDataSet(args.train, tok2id)
-    train_loader = torch.utils.data.DataLoader(train_dataset, **params)
+    # train_dataset = data_loader.SNLIDataSet(args.train, tok2id)
+    # train_loader = torch.utils.data.DataLoader(train_dataset, **params)
     val_dataset = data_loader.SNLIDataSet(args.val, tok2id)
     val_loader = torch.utils.data.DataLoader(val_dataset, **params)
 
@@ -171,6 +101,9 @@ def main(args):
             num_classes=const.NUM_CLASSES,      # Number of class labels
             id2tok=id2tok,                      # Vocabulary
         ).to(device)
+        # Load model weights from disk
+        model.load_state_dict(torch.load(const.MODELS + "rnn.pt"))
+        model.eval()
     elif args.model == "cnn":  # CNN model
         model = CNN(
             vocab_size=const.MAX_VOCAB_SIZE,    # Vocabulary size
@@ -182,6 +115,9 @@ def main(args):
             num_classes=const.NUM_CLASSES,      # Number of class labels
             id2tok=id2tok,                      # Vocabulary
         ).to(device)
+        # Load model weights from disk
+        model.load_state_dict(torch.load(const.MODELS + "cnn.pt"))
+        model.eval()
     else:
         print("Invalid model specification, exiting")
         exit()
@@ -190,28 +126,24 @@ def main(args):
     criterion = torch.nn.CrossEntropyLoss()
     # Model parameters
     params = [p for p in model.parameters() if p.requires_grad]
-    global num_params
-    num_params = sum([np.prod(p.size()) for p in params])
-    # Optimizer
-    optimizer = torch.optim.Adam(params, lr=args.lr)
 
-    # Logging
-    global logging
-    logging = {
-        "train_accs": [],
-        "train_loss": [],
-        "val_accs": [],
-        "val_loss": [],
-        "num_params": int(num_params),
-    }
+    # Inspect correct/incorrect predictions
+    if args.inspect:
+        right, wrong = eval_model(val_loader, model, device, criterion,
+                                  inspect=True)
+        print("\nValidation premises with correct predictions:\n")
+        for i, item in enumerate(right):
+            text = " ".join([id2tok[idx] for idx in item if idx > 0])
+            print("#{}\n {}".format(i + 1, text))
+        print("\nValidation premises with incorrect predictions:\n")
+        for i, item in enumerate(wrong):
+            text = " ".join([id2tok[idx] for idx in item if idx > 0])
+            print("#{}\n {}".format(i + 1, text))
+        return
 
-    # Main training loop
-    for epoch in range(1, args.epochs + 1):
-        # Log epoch
-        print("\n{} epoch: {} {}".format("=" * 20, epoch, "=" * 20))
-        # Train model
-        train(args, model, device, train_loader, val_loader,
-              optimizer, criterion, epoch)
+    # Validation
+    val_acc, _ = eval_model(val_loader, model, device, criterion)
+    print("\n Validation accuracy: {}".format(val_acc))
 
     print("*" * 5 + "\n")
 
@@ -256,10 +188,8 @@ if __name__ == "__main__":
                         metavar="V", help="validation file path")
     parser.add_argument("--id", type=str, default="debug", metavar="I",
                         help="experiment ID")
+    parser.add_argument("--inspect", type=int, default=0, metavar="I",
+                        help="inspect correct/incorrect predictions")
 
     args = parser.parse_args()
     main(args)
-
-    # Dump logging metrics to file
-    with open("logging.{}.json".format(args.id), "w") as fp:
-        json.dump(logging, fp)

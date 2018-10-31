@@ -1,0 +1,117 @@
+*****
+Namespace(batch_size=256, dropout_prob=0.0, emb_dim=300, epochs=5, hidden_dim=250, id='rnn_dropout_0_0', kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/snli_val.tsv')
+
+==================== epoch: 1 ====================
+epoch: [ 1/ 5]; step: [101/391]; loss: 0.9434
+epoch: [ 1/ 5]; step: [201/391]; loss: 0.9088
+epoch: [ 1/ 5]; step: [301/391]; loss: 0.8928
+
+ epoch: [ 1/ 5]; val acc: 61.4; val loss: 0.8383
+
+==================== epoch: 2 ====================
+epoch: [ 2/ 5]; step: [101/391]; loss: 0.7504
+epoch: [ 2/ 5]; step: [201/391]; loss: 0.8028
+epoch: [ 2/ 5]; step: [301/391]; loss: 0.8448
+
+ epoch: [ 2/ 5]; val acc: 65.8; val loss: 0.7703
+
+==================== epoch: 3 ====================
+epoch: [ 3/ 5]; step: [101/391]; loss: 0.7612
+epoch: [ 3/ 5]; step: [201/391]; loss: 0.7762
+epoch: [ 3/ 5]; step: [301/391]; loss: 0.6995
+
+ epoch: [ 3/ 5]; val acc: 68.8; val loss: 0.7331
+
+==================== epoch: 4 ====================
+epoch: [ 4/ 5]; step: [101/391]; loss: 0.6376
+epoch: [ 4/ 5]; step: [201/391]; loss: 0.6453
+epoch: [ 4/ 5]; step: [301/391]; loss: 0.6447
+
+ epoch: [ 4/ 5]; val acc: 67.8; val loss: 0.7208
+
+==================== epoch: 5 ====================
+epoch: [ 5/ 5]; step: [101/391]; loss: 0.7515
+epoch: [ 5/ 5]; step: [201/391]; loss: 0.5779
+epoch: [ 5/ 5]; step: [301/391]; loss: 0.6074
+
+ epoch: [ 5/ 5]; val acc: 71.2; val loss: 0.6841
+*****
+
+*****
+Namespace(batch_size=256, dropout_prob=0.2, emb_dim=300, epochs=5, hidden_dim=250, id='rnn_dropout_0_2', kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/snli_val.tsv')
+
+==================== epoch: 1 ====================
+epoch: [ 1/ 5]; step: [101/391]; loss: 0.9735
+epoch: [ 1/ 5]; step: [201/391]; loss: 0.9034
+epoch: [ 1/ 5]; step: [301/391]; loss: 0.8844
+
+ epoch: [ 1/ 5]; val acc: 58.9; val loss: 0.8570
+
+==================== epoch: 2 ====================
+epoch: [ 2/ 5]; step: [101/391]; loss: 0.7606
+epoch: [ 2/ 5]; step: [201/391]; loss: 0.8355
+epoch: [ 2/ 5]; step: [301/391]; loss: 0.8584
+
+ epoch: [ 2/ 5]; val acc: 65.0; val loss: 0.7914
+
+==================== epoch: 3 ====================
+epoch: [ 3/ 5]; step: [101/391]; loss: 0.7741
+epoch: [ 3/ 5]; step: [201/391]; loss: 0.8042
+epoch: [ 3/ 5]; step: [301/391]; loss: 0.7267
+
+ epoch: [ 3/ 5]; val acc: 67.2; val loss: 0.7626
+
+==================== epoch: 4 ====================
+epoch: [ 4/ 5]; step: [101/391]; loss: 0.6668
+epoch: [ 4/ 5]; step: [201/391]; loss: 0.6647
+epoch: [ 4/ 5]; step: [301/391]; loss: 0.6666
+
+ epoch: [ 4/ 5]; val acc: 67.0; val loss: 0.7425
+
+==================== epoch: 5 ====================
+epoch: [ 5/ 5]; step: [101/391]; loss: 0.7931
+epoch: [ 5/ 5]; step: [201/391]; loss: 0.6187
+epoch: [ 5/ 5]; step: [301/391]; loss: 0.6331
+
+ epoch: [ 5/ 5]; val acc: 69.3; val loss: 0.7297
+*****
+
+*****
+Namespace(batch_size=256, dropout_prob=0.5, emb_dim=300, epochs=5, hidden_dim=250, id='rnn_dropout_0_5', kernel_size=3, log_interval=100, lr=0.001, model='rnn', num_workers=8, seed=42, shuffle=1, train='/scratch/mt3685/nl_data/snli_train.tsv', use_cuda=1, val='/scratch/mt3685/nl_data/snli_val.tsv')
+
+==================== epoch: 1 ====================
+epoch: [ 1/ 5]; step: [101/391]; loss: 0.9980
+epoch: [ 1/ 5]; step: [201/391]; loss: 0.9158
+epoch: [ 1/ 5]; step: [301/391]; loss: 0.9216
+
+ epoch: [ 1/ 5]; val acc: 58.4; val loss: 0.8849
+
+==================== epoch: 2 ====================
+epoch: [ 2/ 5]; step: [101/391]; loss: 0.7709
+epoch: [ 2/ 5]; step: [201/391]; loss: 0.8869
+epoch: [ 2/ 5]; step: [301/391]; loss: 0.9047
+
+ epoch: [ 2/ 5]; val acc: 61.1; val loss: 0.8379
+
+==================== epoch: 3 ====================
+epoch: [ 3/ 5]; step: [101/391]; loss: 0.8122
+epoch: [ 3/ 5]; step: [201/391]; loss: 0.8461
+epoch: [ 3/ 5]; step: [301/391]; loss: 0.7537
+
+ epoch: [ 3/ 5]; val acc: 65.4; val loss: 0.8085
+
+==================== epoch: 4 ====================
+epoch: [ 4/ 5]; step: [101/391]; loss: 0.7032
+epoch: [ 4/ 5]; step: [201/391]; loss: 0.7755
+epoch: [ 4/ 5]; step: [301/391]; loss: 0.7582
+
+ epoch: [ 4/ 5]; val acc: 66.0; val loss: 0.7872
+
+==================== epoch: 5 ====================
+epoch: [ 5/ 5]; step: [101/391]; loss: 0.8479
+epoch: [ 5/ 5]; step: [201/391]; loss: 0.6313
+epoch: [ 5/ 5]; step: [301/391]; loss: 0.7015
+
+ epoch: [ 5/ 5]; val acc: 64.6; val loss: 0.7780
+*****
+

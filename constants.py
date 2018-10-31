@@ -11,3 +11,4 @@ ID2TOK = "data/id2tok.pkl"
 TOK2ID = "data/tok2id.pkl"
 
 FASTTEXT = "/scratch/mt3685/nl_data/wiki-news-300d-1M.vec"
+MODELS = "/scratch/mt3685/nl_data/models/"
